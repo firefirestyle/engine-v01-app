@@ -1,0 +1,55 @@
+{
+  "ngDeps": {
+    "1": "",
+    "3": [
+      {
+        "1": "package:angular2/platform/browser_static.dart",
+        "5": false
+      },
+      {
+        "1": "package:angular2/core.dart",
+        "5": false
+      },
+      {
+        "1": "package:angular2/router.dart",
+        "5": false
+      },
+      {
+        "1": "package:cl/config.dart",
+        "4": "config",
+        "5": false
+      },
+      {
+        "1": "package:cl/comp_me.dart",
+        "5": false
+      },
+      {
+        "1": "dart:async",
+        "5": false
+      },
+      {
+        "1": "package:cl/dialog_login.dart",
+        "5": false
+      },
+      {
+        "1": "package:cl/dialog_logout.dart",
+        "5": false
+      },
+      {
+        "1": "package:cl/app_main.dart",
+        "5": false
+      }
+    ],
+    "6": "main.dart"
+  },
+  "type": {
+    "main": {
+      "class": "Identifier",
+      "name": "main",
+      "moduleUrl": "asset:cl/web/main.dart",
+      "prefix": null,
+      "value": null
+    }
+  },
+  "alias": {}
+}

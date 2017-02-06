@@ -1,9 +1,5 @@
 indexes:
 
-- kind: fa
-  properties:
-  - name: Updated
-    direction: desc
 
 - kind: fa
   properties:
@@ -31,10 +27,6 @@ indexes:
   - name: Updated
     direction: desc
 
-- kind: fu
-  properties:
-  - name: Updated
-    direction: desc
 
 - kind: fu
   properties:
@@ -42,10 +34,6 @@ indexes:
   - name: Updated
     direction: desc
 
-- kind: fa-blob
-  properties:
-  - name: Updated
-    direction: desc
 
 - kind: fa-blob
   properties:
@@ -66,10 +54,6 @@ indexes:
   - name: Updated
     direction: desc
 
-- kind: fu-blob
-  properties:
-  - name: Updated
-    direction: desc
 
 - kind: fu-blob
   properties:
