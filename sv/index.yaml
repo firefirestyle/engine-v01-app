@@ -1,0 +1,37 @@
+indexes:
+
+- kind: fa
+  properties:
+  - name: Updated
+    direction: desc
+
+- kind: fa
+  properties:
+  - name: Props.Value
+  - name: Updated
+    direction: desc
+
+- kind: fa
+  properties:
+  - name: UserName
+  - name: Props.Value
+  - name: Updated
+    direction: desc
+
+- kind: fa
+  properties:
+  - name: Props.Value
+  - name: Tags.Tag
+  - name: Updated
+    direction: desc
+
+- kind: fu
+  properties:
+  - name: Updated
+    direction: desc
+
+- kind: fu
+  properties:
+  - name: Props.Value
+  - name: Updated
+    direction: desc

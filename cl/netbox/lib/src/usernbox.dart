@@ -89,7 +89,7 @@ class UserNBox {
     return new UserInfoProp(new pro.MiniProp.fromByte(response.response.asUint8List(), errorIsThrow: false));
   }
 
-  Future<UserKeyListProp> findUser(String cursor, {String group: "", String mode: ""}) async {
+  Future<UserKeyListProp> findUser(String cursor, {String group: "", String mode: "-update"}) async {
     var url = "${backAddr}/api/v1/user/find?mode=${Uri.encodeComponent(mode)}&group=${Uri.encodeComponent(group)}";
     var requester = await builder.createRequester();
     req.Response response = await requester.request(req.Requester.TYPE_GET, url);

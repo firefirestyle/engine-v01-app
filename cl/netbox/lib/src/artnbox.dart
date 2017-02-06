@@ -308,13 +308,17 @@ class ArtNBox {
   Future<ArtKeyListProp> findArticle(String cursor, {
     String userName: "",
     Map<String, String> props: const {},
-    List<String> tags: const []}) async {
+    List<String> tags: const [],String mode:"-update"}) async {
 
     var urls = ["""${backAddr}${this.basePath}/find?cursor=${Uri.encodeComponent(cursor)}"""];
 
     //
     if (userName != "" && userName != null) {
       urls.add("""&userName=${Uri.encodeComponent(userName)}""");
+    }
+
+    if (mode != "" && mode != null) {
+      urls.add("""&mode=${Uri.encodeComponent(mode)}""");
     }
 
     //
