@@ -1,0 +1,8 @@
+name: firefirestyle.location
+description: html location lib
+version: 0.0.1
+dependencies:
+ browser: any
+ dart_to_js_script_rewriter: any
+dev_dependencies:
+  test: any

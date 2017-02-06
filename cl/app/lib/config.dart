@@ -2,16 +2,19 @@ import 'package:cookie/cookie.dart' as cookie;
 import 'cookie.dart';
 import 'package:k07me.netbox/netbox.dart';
 import 'package:k07me.httprequest/request_html.dart';
-
+import 'package:k07me.prop/prop.dart';
+import 'dart:html' as html;
+import 'package:firefirestyle.location/location_html.dart' as loc;
 class AppConfig {
+  final bool isDebug = true;
   static AppConfig inst = new AppConfig();
   MyCookie _cookie= new MyCookie();
   MyCookie get cookie=> _cookie;
 
 
-  String get clientAddr => "http://localhost:8085";
+  String get clientAddr => (isDebug==true?"http://localhost:8085": "https://${new loc.HtmlLocation().host}");
 
-  String get baseAddr => "http://localhost:8080";
+  String get baseAddr => (isDebug==true?"http://localhost:8080": "https://${new loc.HtmlLocation().host}");
 
   String makeUrl(path) => baseAddr + path;
 
