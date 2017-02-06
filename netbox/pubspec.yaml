@@ -1,0 +1,8 @@
+name: k07me.netbox
+description: web client
+version: 0.0.1
+dependencies:
+ k07me.httprequest:
+    path: ../httprequest
+ k07me.prop:
+    path: ../prop

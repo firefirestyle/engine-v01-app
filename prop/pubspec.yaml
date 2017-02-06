@@ -1,0 +1,6 @@
+name: k07me.prop
+description: porp
+version: 0.0.1
+dependencies:
+dev_dependencies:
+  test: any
