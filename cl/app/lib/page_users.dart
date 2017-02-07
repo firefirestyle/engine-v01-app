@@ -1,5 +1,3 @@
-// Copyright (c) 2017, kyorohiro. All rights reserved. Use of this source code
-// is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
@@ -25,15 +23,9 @@ import 'comp_users.dart';
     ]
 )
 class UsersPage implements OnInit {
-  String twitterLoginUrl = "";
   final RouteParams _routeParams;
   UsersPage(this._routeParams);
-  config.AppConfig rootConfig = config.AppConfig.inst;
-
   ngOnInit() {
-
-    twitterLoginUrl =  config.AppConfig.inst.twitterLoginUrl;
-    print(_routeParams.params.toString());
     if(_routeParams.params.containsKey("token")) {
       config.AppConfig.inst.cookie.accessToken = Uri.decodeFull(_routeParams.params["token"]);
       config.AppConfig.inst.cookie.setIsMaster(_routeParams.params["isMaster"]);

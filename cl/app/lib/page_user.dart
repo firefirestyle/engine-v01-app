@@ -13,7 +13,7 @@ import 'comp_articles.dart';
 //
 @Component(
     selector: "my-user",
-    directives: const[UserComponent,PostArticleComponent,ArticlesComponent],
+    directives: const[UserComponent, PostArticleComponent, ArticlesComponent],
     template: """
     <div class="mybody">
     <user-component  [userInfo]='userInfo'></user-component>
@@ -42,7 +42,7 @@ class UserPage implements OnInit {
 
   UserPage(this._routeParams);
 
-  Map<String,Object> get params => {"user":_routeParams.get("name")};
+  Map<String, Object> get params => {"user": _routeParams.get("name")};
 
   ngOnInit() {
     _init();
@@ -51,7 +51,7 @@ class UserPage implements OnInit {
   _init() async {
     UserNBox userNBox = config.AppConfig.inst.appNBox.userNBox;
     try {
-      userInfo  = await userNBox.getUserInfo(params["user"]);
+      userInfo = await userNBox.getUserInfo(params["user"]);
     } catch (e) {
 
     }

@@ -47,14 +47,13 @@ class ArticleComponent implements OnInit, DynamicItem {
   @Input()
   int imageWidth = 200;
 
-  @Input()
-  int contentWidth = 210;
+  int get contentWidth => imageWidth+10;
 
   @Input()
   ArticlesComponent parent = null;
 
   final ElementRef element;
-  int width = 220;
+  int get width => imageWidth +20;
   int height = 300;
 
   html.Element _imageContElm = null;
@@ -114,6 +113,8 @@ class ArticleComponent implements OnInit, DynamicItem {
     if (artInfo == null){
       artInfo = new ArtInfoProp(new MiniProp());
     }
+    var elm = element.nativeElement;
+    (elm as html.Element).style.width = "${imageWidth+4}px";
     updateInfo();
   }
 
@@ -139,7 +140,7 @@ class ArticleComponent implements OnInit, DynamicItem {
           print("-->A 1");
 
           await c.future;
-          print("-->A 2");
+          print("-->A 2 ${imageWidth}");
           _imageContElm.style.width = "${imageWidth}px";
           _imageContElm.children.clear();
           _imageContElm.children.add(imgElm);
