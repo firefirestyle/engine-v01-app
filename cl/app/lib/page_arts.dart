@@ -8,23 +8,10 @@ import 'comp_articles.dart';
 @Component(
     selector: "my-arts",
     directives: const [ArticleComponent, ArticlesComponent],
-    template:  """
-    <div class="mybody">
-    <arts-component [params]='params'></arts-component>
-    </div>
-  """,
-    styles: const[
-      """
-    .mybody {
-      display: block;
-      min-height: 400px;
-    }
-    """,
-    ]
+    template:  """<arts-component [params]='params'></arts-component>""",
 )
 class ArtsPage implements OnInit {
   final RouteParams _routeParams;
-  config.AppConfig rootConfig = config.AppConfig.inst;
   Map<String,Object> params = {};
 
   ArtsPage(this._routeParams){
