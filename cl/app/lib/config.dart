@@ -6,7 +6,7 @@ import 'package:k07me.prop/prop.dart';
 import 'dart:html' as html;
 import 'package:firefirestyle.location/location_html.dart' as loc;
 class AppConfig {
-  final bool isDebug = true;
+  final bool isDebug = false;
   static AppConfig inst = new AppConfig();
   MyCookie _cookie= new MyCookie();
   MyCookie get cookie=> _cookie;

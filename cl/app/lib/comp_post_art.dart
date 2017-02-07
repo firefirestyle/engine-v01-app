@@ -118,6 +118,7 @@ class PostArticleComponent implements OnInit {
             props: {"s": "p"},
             tags: artInfo.tags,
             info: v.toJson());
+        artInfo.articleId = newArtProp.articleId;
       } else {
         newArtProp = await artNBox.updateArt(accessToken, artInfo.articleId, userName: artInfo.userName,
             title: artInfo.title,
@@ -126,6 +127,7 @@ class PostArticleComponent implements OnInit {
             props: {"s": "p"},
             tags: artInfo.tags,
             info: v.toJson());
+        artInfo.articleId = newArtProp.articleId;
       }
       if (imageSrcs.length > 0 && false == imageSrcs[0].startsWith("http")) {
         var v = conv.BASE64.decode(imageSrcs[0].replaceFirst(new RegExp(".*,"), ''));
