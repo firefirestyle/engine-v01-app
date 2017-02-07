@@ -58,13 +58,14 @@ class UserPage implements OnInit {
   ngOnInit() {
     twitterLoginUrl = config.AppConfig.inst.twitterLoginUrl;
     _init();
+    print("==name===> ${_routeParams.get("name")}");
   }
 
   _init() async {
     UserNBox userNBox = config.AppConfig.inst.appNBox.userNBox;
     try {
       userInfo  = await userNBox.getUserInfo(
-          config.AppConfig.inst.cookie.userName);
+          params["user"]);//config.AppConfig.inst.cookie.userName);
     } catch (e) {
 
     }
