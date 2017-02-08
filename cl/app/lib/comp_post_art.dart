@@ -23,7 +23,7 @@ import 'dart:async';
       <input [(ngModel)]='artInfo.title' class='title'>
       </div>
       <div><label>Tag</label><br>
-      <input [(ngModel)]='tag' (keyup.enter)='onEnterTag()' class='content'><br>
+      <input [(ngModel)]='tag' (change)='onEnterTag()' class='content'><br>
       <button *ngFor='let t of artInfo.tags' (click)='onClickTag(t)'>(x) {{t}}</button>
       </div>
       <div>
