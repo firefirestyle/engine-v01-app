@@ -16,15 +16,18 @@ import 'page_user.dart';
 import 'page_users.dart';
 import 'page_post_art.dart';
 import 'comp_post_art.dart';
+import 'dart:html' as html;
 
 @Component(
   selector: "my-app",
   directives: const [LoginDialog, UserPage, UsersPage, LogoutDialog, PostArticlePage,ROUTER_DIRECTIVES],
   providers: const [ROUTER_PROVIDERS],
   template: """
-  <header>
+  <div>
+  FireFireStyle 炎の型工房
+  </div>
+  <header class='myhe' #headera>
   <nav class='myul'>
-
   <div *ngIf='useHome==true'>
   <a class='myli' [routerLink]="['Arts']">Home</a>
   </div>
@@ -58,6 +61,7 @@ import 'comp_post_art.dart';
   </my-login-dialog>
    <my-logout-dialog [name]="'as'" #myLogoutDialoga>
   </my-logout-dialog>
+
   """,
   styles: const ["""
   .myul {
@@ -69,10 +73,23 @@ import 'comp_post_art.dart';
     background-color: #f1f1f1;
  #   border: 1px solid #555;
   }
+  .myhe {
+      position: absolute;
+      width: 600px;
+      z-index: auto;
+   }
   @media (max-width: 600px) {
     .myul {
       width:100%;
      }
+     .myhe {
+      width:90%;
+     }
+  }
+  .topNavi {
+    position: fixed;
+    top: 0;
+    z-index: 999;
   }
   .myli {
     display: block;
@@ -142,8 +159,29 @@ class AppComponent implements OnInit {
   bool useUsers = true;
   config.AppConfig rootConfig = config.AppConfig.inst;
 
-  AppComponent(){
 
+  @ViewChild('headera')
+  set header(ElementRef elementRef) {
+
+    html.Element el = elementRef.nativeElement;
+    html.window.onScroll.listen((e){
+      if(html.window.scrollY > 100) {
+        print(">>A ${html.window.scrollY  }");
+
+        if(false == el.classes.contains("topNavi")){
+          el.classes.add("topNavi");
+        }
+      } else {
+        print(">>B ${html.window.scrollY  }");
+
+        if(true == el.classes.contains("topNavi")){
+          el.classes.remove("topNavi");
+        }
+      }
+    });
+
+  }
+  AppComponent(){
   }
   onLogin(LoginDialog d) {
     d.open();
