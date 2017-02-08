@@ -12,6 +12,10 @@ import 'config.dart' as config;
   <div>
   <div *ngFor='let ui of userInfos'><user-component  [userInfo]='ui'></user-component></div>
   </div>
+  <!--> <-->
+  <div style='width:100%;height:20px;box-shadow:2px 2px 1px grey;' (click)='onNext()'>
+    <div align='center'>NEXT</div>
+  </div>
   """
 )
 class UsersComponent implements OnInit {
@@ -36,6 +40,7 @@ class UsersComponent implements OnInit {
   _init() async {
     try {
       UserKeyListProp userKeys = await config.AppConfig.inst.appNBox.userNBox.findUser(cursor);
+      cursor = userKeys.cursorNext;
       for(String key in userKeys.keys) {
         UserInfoProp infoProp = await config.AppConfig.inst.appNBox.userNBox.getUserInfoFromKey(key);
          if(!_userNames.contains(infoProp.userName)) {
@@ -44,6 +49,9 @@ class UsersComponent implements OnInit {
       }
     } catch(e){
     }
+  }
+  onNext(){
+
   }
 }
 
