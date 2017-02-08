@@ -45,17 +45,14 @@ class ArticleComponent implements OnInit, DynamicItem {
   String iconUrl = "";
 
   @Input()
-  int imageWidth = 200;
-
-  int get contentWidth => imageWidth+10;
-
-  @Input()
   ArticlesComponent parent = null;
 
-  final ElementRef element;
-  int get width => imageWidth +20;
+
+  @Input()
+  int width = 200;
   int height = 300;
 
+  final ElementRef element;
   html.Element _imageContElm = null;
   @ViewChild('imagecont')
   set image(ElementRef elementRef) {
@@ -65,6 +62,9 @@ class ArticleComponent implements OnInit, DynamicItem {
     _imageContElm  = elementRef.nativeElement;
 
   }
+
+  @Input()
+  String userName;
 
   @Input()
   ArticleComponentInfo info = new ArticleComponentInfo();
@@ -84,8 +84,7 @@ class ArticleComponent implements OnInit, DynamicItem {
   ArtInfoProp get artInfo => _artInfo;
 
 
-  @Input()
-  String userName;
+
 
   html.Element _mainElement;
 
@@ -93,7 +92,6 @@ class ArticleComponent implements OnInit, DynamicItem {
   @ViewChild('userinfocont')
   set main(ElementRef elementRef) {
     _mainElement = elementRef.nativeElement;
-    _mainElement.style.width ="${contentWidth}px";
   }
 
   ArticleComponent(this.element,this._router, this._routeParams){
@@ -101,7 +99,7 @@ class ArticleComponent implements OnInit, DynamicItem {
     //params["user"] = _routeParams.get("user");
     var elm = element.nativeElement;
     print("${elm}");
-    (elm as html.Element).style.width = "${imageWidth+4}px";
+    (elm as html.Element).style.width = "${width+4}px";
     (elm as html.Element).style.boxShadow = "2px 2px 1px grey";
     (elm as html.Element).style.display = 'inline-block';
     (elm as html.Element).style.position = "relative";
@@ -114,20 +112,21 @@ class ArticleComponent implements OnInit, DynamicItem {
       artInfo = new ArtInfoProp(new MiniProp());
     }
     var elm = element.nativeElement;
-    (elm as html.Element).style.width = "${imageWidth+4}px";
+    (elm as html.Element).style.width = "${width+4}px";
     updateInfo();
   }
 
   updateInfo() async {
     if(info.artNBox != null && artInfo != null) {
       try {
+        _mainElement.style.width ="${width}px";
         if(artInfo.iconUrl == null || artInfo.iconUrl == ""){
           iconUrl = "";
           if(_imageContElm != null) {
             _imageContElm.children.clear();
           }
         } else {
-          html.ImageElement imgElm = new html.ImageElement(width:imageWidth);
+          html.ImageElement imgElm = new html.ImageElement(width:width);
           Completer c = new Completer();
           imgElm.onLoad.listen((e){
             c.complete("");
@@ -140,8 +139,8 @@ class ArticleComponent implements OnInit, DynamicItem {
           print("-->A 1");
 
           await c.future;
-          print("-->A 2 ${imageWidth}");
-          _imageContElm.style.width = "${imageWidth}px";
+          print("-->A 2 ${width}");
+          _imageContElm.style.width = "${width}px";
           _imageContElm.children.clear();
           _imageContElm.children.add(imgElm);
         }

@@ -12,7 +12,7 @@ import 'package:k07me.prop/prop.dart';
     template: """
     <div class="mybody">
     <div *ngFor='let artInfo of artInfos' style='position:relative;'>
-        <art-component [parent]='own' [info]='info' [artInfo]='artInfo'  [imageWidth]='((dynaCore.rootWidth-90)/2)'></art-component>
+        <art-component [parent]='own' [info]='info' [artInfo]='artInfo'  [width]='((dynaCore.rootWidth-20)/2)'></art-component>
     </div>
     </div>
   """
@@ -67,9 +67,9 @@ class ArticlesComponent implements OnInit {
     dyna.FreeSpaceInfo info = dynaCore.addBlock(
         ap.width + 10, ap.height + 10);
     elm.style.position = "absolute";
-    elm.style.left = "${info.xs}px";
+    elm.style.left = "${(info.xs+5)}px";
     elm.style.top = "${info.y}px";
-    print(">>lt: ${elm.style.left}px ${elm.style.top}px");
+   // print(">>lt: ${elm.style.left}px ${elm.style.top}px");
     (_artsComponentElementRef.nativeElement as html.Element).style.display = "block";
     (_artsComponentElementRef.nativeElement as html.Element).style.height = "${dynaCore.rootHeight+20}px";
   }

@@ -6,11 +6,19 @@ import 'package:k07me.prop/prop.dart';
 import 'dart:html' as html;
 import 'package:firefirestyle.location/location_html.dart' as loc;
 class AppConfig {
-  final bool isDebug = true;
+
   static AppConfig inst = new AppConfig();
   MyCookie _cookie= new MyCookie();
   MyCookie get cookie=> _cookie;
 
+  bool get isDebug {
+    var location = new loc.HtmlLocation();
+    if (location.host == "localhost" || location.host == "127.0.0.1") {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   String get clientAddr => (isDebug==true?"http://localhost:8085": "https://${new loc.HtmlLocation().host}");
 
