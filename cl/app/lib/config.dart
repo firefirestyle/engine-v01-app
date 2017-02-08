@@ -13,6 +13,7 @@ class AppConfig {
 
   bool get isDebug {
     var location = new loc.HtmlLocation();
+    print(">> ${location.host}");
     if (location.host == "localhost" || location.host == "127.0.0.1") {
       return true;
     } else {

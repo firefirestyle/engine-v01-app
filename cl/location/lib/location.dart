@@ -5,9 +5,11 @@ class Location {
   String _hash = "";
   String _baseAddress = "";
   String _scheme = "";
-  String _host = "";
+  String _hostWithPort = "";
   String _path = "";
   String _hashPath;
+  int _port = 80;
+  String _host = "";
 
   Map<String, String> _values = {};
   Map<String, String> _urlValues = {};
@@ -15,10 +17,12 @@ class Location {
   String get href => _href;
   String get scheme => _scheme;
   String get hash => _hash;
+  String get hostWithPort => _hostWithPort;
   String get host => _host;
+  int get port => _port;
   String get path => _path;
   String get withSchemeHostPath => _baseAddress;
-  String get baseAddr => "${scheme}://${host}";
+  String get baseAddr => "${scheme}://${hostWithPort}";
   String get baseAddrWithPath => baseAddr + path;
   String get hashPath => _hashPath; //
   Map<String, String> get values => _values;
@@ -57,10 +61,23 @@ class Location {
     }
     {
       var v = this._baseAddress.replaceFirst(new RegExp(r".*://"), "");
-      this._host = v.replaceFirst(new RegExp(r"/.*"), "");
+      this._hostWithPort = v.replaceFirst(new RegExp(r"/.*"), "");
     }
     {
-      this._path = this._baseAddress.replaceFirst(this.scheme+"://", "").replaceFirst(this.host, "");
+      String por = hostWithPort.replaceAll(new RegExp(r".*:"), "");
+      if(por == "") {
+        _port = 80;
+      } else {
+        try {
+          _port = int.parse(por);
+        }catch(e){
+          _port = 80;
+        }
+      }
+      _host =  hostWithPort.replaceAll(new RegExp(r":.*"), "");
+    }
+    {
+      this._path = this._baseAddress.replaceFirst(this.scheme+"://", "").replaceFirst(this.hostWithPort, "");
 //      this._path = this._baseAddress.replaceFirst(new RegExp(r".*/"), "/");
     }
     {
