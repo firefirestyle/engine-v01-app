@@ -14,7 +14,7 @@ import 'config.dart' as config;
   </div>
   <!--> <-->
   <div style='width:100%;height:20px;box-shadow:2px 2px 1px grey;' (click)='onNext()'>
-    <div align='center'>NEXT</div>
+    <div align='center'>MORE</div>
   </div>
   """
 )
@@ -41,11 +41,21 @@ class UsersComponent implements OnInit {
     try {
       UserKeyListProp userKeys = await config.AppConfig.inst.appNBox.userNBox.findUser(cursor);
       cursor = userKeys.cursorNext;
-      for(String key in userKeys.keys) {
-        UserInfoProp infoProp = await config.AppConfig.inst.appNBox.userNBox.getUserInfoFromKey(key);
-         if(!_userNames.contains(infoProp.userName)) {
+      var ks = new List.from(userKeys.keys);
+      List<Future> fs = [];
+      while(0<ks.length) {
+        while(fs.length < 5 && 0<ks.length){
+          var key = ks.removeAt(0);
+          fs.add(config.AppConfig.inst.appNBox.userNBox.getUserInfoFromKey(key));
+        }
+
+        for (var infoPropFs in fs) {
+          UserInfoProp infoProp = await infoPropFs;
+          if (!_userNames.contains(infoProp.userName)) {
             userInfos.add(infoProp);
-         }
+          }
+        }
+        fs.clear();
       }
     } catch(e){
     }

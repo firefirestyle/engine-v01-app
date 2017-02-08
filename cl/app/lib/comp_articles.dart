@@ -5,7 +5,8 @@ import 'package:k07me.netbox/netbox.dart';
 import 'comp_article.dart';
 import 'dynablock.dart' as dyna;
 import 'dart:html' as html;
-import 'package:k07me.prop/prop.dart';
+import 'dart:async';
+
 @Component(
     selector: "arts-component",
     directives: const [ArticleComponent],
@@ -16,7 +17,7 @@ import 'package:k07me.prop/prop.dart';
     </div>
     </div>
     <div style='width:100%;height:20px;box-shadow:2px 2px 1px grey;' (click)='onNext()'>
-    <div align='center'>NEXT</div>
+    <div align='center'>MORE</div>
     </div>
   """
 )
@@ -37,7 +38,7 @@ class ArticlesComponent implements OnInit {
   String cursor = "";
 
   @Input()
-  Map<String,Object> params= {};
+  Map<String, Object> params = {};
 
   List<ArtInfoProp> artInfos = [];
 
@@ -46,50 +47,63 @@ class ArticlesComponent implements OnInit {
   }
 
   html.Element _contElm = null;
+
   @ViewChild('container')
   set image(ElementRef elementRef) {
-    if(elementRef == null || elementRef.nativeElement == null) {
+    if (elementRef == null || elementRef.nativeElement == null) {
       return;
     }
-    _contElm  = elementRef.nativeElement;
-
+    _contElm = elementRef.nativeElement;
   }
 
-  onNext(){
+  onNext() {
     update();
   }
+
   update() async {
     ArtNBox artNBox = config.AppConfig.inst.appNBox.artNBox;
-    ArtKeyListProp list = await artNBox.findArticle(cursor, props: {"s": "p"},tags: getTags(),userName: getUserName());
+    ArtKeyListProp list = await artNBox.findArticle(cursor, props: {"s": "p"}, tags: getTags(), userName: getUserName());
     cursor = list.cursorNext;
-    if(dynaCore == null) {
-      dynaCore =  new dyna.DynaBlockCore(rootWidth: (_artsComponentElementRef.nativeElement as html.Element).clientWidth);
+    if (dynaCore == null) {
+      dynaCore = new dyna.DynaBlockCore(rootWidth: (_artsComponentElementRef.nativeElement as html.Element).clientWidth);
     }
 
-    for (String key in list.keys) {
-      ArtInfoProp artInfo = await artNBox.getArtFromStringId(key);
-      artInfos.add(artInfo);
+
+    List<Future> fs = [];
+    var ks = new List.from(list.keys);
+    while(0 < ks.length) {
+      while (0 < ks.length && fs.length < 5) {
+        String key = ks.removeAt(0);
+        fs.add(artNBox.getArtFromStringId(key));
+      }
+
+      for (var artInfofs in fs) {
+        artInfos.add(await artInfofs);
+      }
+      fs.clear();
     }
   }
+
   //
   //
   dyna.DynaBlockCore dynaCore = null;
+
   append(DynamicItem ap) {
-    if(ap.element == null) {
+    if (ap.element == null) {
       return;
     }
-    if(dynaCore == null) {
-      dynaCore =  new dyna.DynaBlockCore(rootWidth: (_artsComponentElementRef.nativeElement as html.Element).clientWidth);
+    if (dynaCore == null) {
+      dynaCore = new dyna.DynaBlockCore(rootWidth: (_artsComponentElementRef.nativeElement as html.Element).clientWidth);
     }
     var elm = ap.element.nativeElement;
     dyna.FreeSpaceInfo info = dynaCore.addBlock(
         ap.width + 10, ap.height + 10);
     elm.style.position = "absolute";
-    elm.style.left = "${(info.xs+5)}px";
+    elm.style.left = "${(info.xs + 5)}px";
     elm.style.top = "${info.y}px";
-   // print(">>lt: ${elm.style.left}px ${elm.style.top}px");
+    // print(">>lt: ${elm.style.left}px ${elm.style.top}px");
     (_contElm).style.display = "block";
-    (_contElm).style.height = "${dynaCore.rootHeight+20}px";
+    (_contElm).style.height = "${dynaCore.rootHeight + 20}px";
   }
 
   //
@@ -98,7 +112,7 @@ class ArticlesComponent implements OnInit {
 
   List<String> getTags() {
     var v = params["tag"];
-    if(v == "" || v== null) {
+    if (v == "" || v == null) {
       return [];
     } else {
       return [v];
@@ -107,7 +121,7 @@ class ArticlesComponent implements OnInit {
 
   String getUserName() {
     var v = params["user"];
-    if(v == "" || v== null) {
+    if (v == "" || v == null) {
       return "";
     } else {
       return Uri.decodeComponent(v);
@@ -117,14 +131,16 @@ class ArticlesComponent implements OnInit {
 
 abstract class DynamicItem {
   ElementRef get element;
+
   int get width;
+
   int get height;
 }
 
 class MyArticleComponentInfo extends ArticleComponentInfo {
   final ArticlesComponent parent;
 
-  MyArticleComponentInfo({this.parent: null}) : super() ;
+  MyArticleComponentInfo({this.parent: null}) : super();
 
   bool isUpdatable(String userName) => (parent == null ? false : config.AppConfig.inst.cookie.userName == userName);
 
@@ -135,6 +151,6 @@ class MyArticleComponentInfo extends ArticleComponentInfo {
   }
 
   onClickTag(String t) {
-    parent._router.navigate(["Arts",{"tag":t}]);
+    parent._router.navigate(["Arts", {"tag": t}]);
   }
 }
