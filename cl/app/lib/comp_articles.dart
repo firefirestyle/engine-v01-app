@@ -10,10 +10,13 @@ import 'package:k07me.prop/prop.dart';
     selector: "arts-component",
     directives: const [ArticleComponent],
     template: """
-    <div class="mybody">
+    <div #container>
     <div *ngFor='let artInfo of artInfos' style='position:relative;'>
         <art-component [parent]='own' [info]='info' [artInfo]='artInfo'  [width]='((dynaCore.rootWidth-20)/2)'></art-component>
     </div>
+    </div>
+    <div style='width:100%;height:20px;box-shadow:2px 2px 1px grey;' (click)='onNext()'>
+    <div align='center'>NEXT</div>
     </div>
   """
 )
@@ -31,6 +34,9 @@ class ArticlesComponent implements OnInit {
   }
 
   @Input()
+  String cursor = "";
+
+  @Input()
   Map<String,Object> params= {};
 
   List<ArtInfoProp> artInfos = [];
@@ -39,11 +45,23 @@ class ArticlesComponent implements OnInit {
     update();
   }
 
+  html.Element _contElm = null;
+  @ViewChild('container')
+  set image(ElementRef elementRef) {
+    if(elementRef == null || elementRef.nativeElement == null) {
+      return;
+    }
+    _contElm  = elementRef.nativeElement;
 
+  }
 
+  onNext(){
+    update();
+  }
   update() async {
     ArtNBox artNBox = config.AppConfig.inst.appNBox.artNBox;
-    ArtKeyListProp list = await artNBox.findArticle("", props: {"s": "p"},tags: getTags(),userName: getUserName());
+    ArtKeyListProp list = await artNBox.findArticle(cursor, props: {"s": "p"},tags: getTags(),userName: getUserName());
+    cursor = list.cursorNext;
     if(dynaCore == null) {
       dynaCore =  new dyna.DynaBlockCore(rootWidth: (_artsComponentElementRef.nativeElement as html.Element).clientWidth);
     }
@@ -70,8 +88,8 @@ class ArticlesComponent implements OnInit {
     elm.style.left = "${(info.xs+5)}px";
     elm.style.top = "${info.y}px";
    // print(">>lt: ${elm.style.left}px ${elm.style.top}px");
-    (_artsComponentElementRef.nativeElement as html.Element).style.display = "block";
-    (_artsComponentElementRef.nativeElement as html.Element).style.height = "${dynaCore.rootHeight+20}px";
+    (_contElm).style.display = "block";
+    (_contElm).style.height = "${dynaCore.rootHeight+20}px";
   }
 
   //
