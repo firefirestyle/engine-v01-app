@@ -142,9 +142,8 @@ class MyArticleComponentInfo extends ArticleComponentInfo {
 
   MyArticleComponentInfo({this.parent: null}) : super();
 
-  bool isUpdatable(String userName) => (parent == null ? false : config.AppConfig.inst.cookie.userName == userName);
 
-  onRemove(ArtInfoProp art) {
+      onRemove(ArtInfoProp art) {
     if (parent != null && parent.artInfos.contains(art)) {
       parent.artInfos.remove(art);
     }

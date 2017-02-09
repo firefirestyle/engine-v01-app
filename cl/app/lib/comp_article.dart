@@ -196,6 +196,8 @@ class ArticleComponentInfo {
 
   String get accessToken => config.AppConfig.inst.cookie.accessToken;
 
+  bool isUpdatable(String userName) => (config.AppConfig.inst.cookie.userName == userName|| config.AppConfig.inst.cookie.isMaster != 0);
+
   onRemove(ArtInfoProp art) {
   }
 

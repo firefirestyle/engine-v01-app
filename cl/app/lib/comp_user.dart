@@ -62,7 +62,7 @@ class UserComponent implements OnInit {
     (elementRef.nativeElement as html.ImageElement).style.width = "${imageWidth}px";
   }
 
-  bool get isUpdatable => config.AppConfig.inst.cookie.userName == userInfo.userName;
+  bool get isUpdatable => (config.AppConfig.inst.cookie.userName == userInfo.userName ||config.AppConfig.inst.cookie.isMaster != 0);
 
   MeNBox get meNBox => config.AppConfig.inst.appNBox.meNBox;
 
