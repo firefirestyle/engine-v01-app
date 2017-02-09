@@ -26,7 +26,9 @@ class NewArtProp {
   NewArtProp(this.prop) {}
 
   String get articleId => this.prop.getString("articleId", "");
+  String get articleKey => prop.getString("articleKey", "");
 }
+
 
 class ArtInfoKey {
   String key;
@@ -54,6 +56,8 @@ class ArtInfoProp {
     return new ArtInfoProp(null);
   }
 
+
+  String get articleKey => prop.getString("articleKey", "");
   String get projectId => prop.getString(ArtNBox.TypeProjectId, "");
 
   //
