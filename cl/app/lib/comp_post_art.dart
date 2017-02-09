@@ -166,6 +166,7 @@ class PostArticleComponent implements OnInit {
   }
 
   updateIcon(String src) async {
+    imageSrcs.clear();
     imageSrcs.add(src);
   }
 }

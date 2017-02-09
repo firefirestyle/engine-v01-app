@@ -52,10 +52,20 @@ import 'dart:html' as html;
   </div>
   </nav>
   </header>
-  <main style='clear:both;'>main</main>
-  <br>
+  <main class='main'><br>
   <router-outlet></router-outlet>
-  <hooter>hooter</hooter>
+  </main>
+  <footer style='background-color:#555; font:#000000'>
+  <div style='color:#ffffff;'>
+  MAIL: <a style='color:#ffffff;' href="kyorohiro@firefirestyle.net">kyorohiro@firefirestyle.net</a>
+  </div>
+  <div style='color:#ffffff;'>
+  Blog: <a style='color:#ffffff;' href="http://blogger.firefirestyle.net">http://blogger.firefirestyle.net</a>
+  </div>
+  <div style='color:#ffffff;'>
+  Twitter: <a style='color:#ffffff;' href="https://twitter.com/firefirestyle">https://twitter.com/firefirestyle</a>
+  </div>
+  </footer>
 
   <my-login-dialog [name]="'as'" #myDialoga>
   </my-login-dialog>
@@ -64,6 +74,10 @@ import 'dart:html' as html;
 
   """,
   styles: const ["""
+  .main {
+    clear:both;
+    min-height:800px;
+  }
   .myul {
     list-style-type: none;
     margin: 0;

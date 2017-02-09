@@ -34,10 +34,6 @@ import 'package:k07me.prop/prop.dart' as prop;
     </deletearticle-dialog>
     </div>
   """,
-    styles: const[
-      """
-    """,
-    ]
 )
 class ArticleComponent implements OnInit, DynamicItem {
   final RouteParams _routeParams;
@@ -104,6 +100,8 @@ class ArticleComponent implements OnInit, DynamicItem {
     (elm as html.Element).style.display = 'inline-block';
     (elm as html.Element).style.position = "relative";
     (elm as html.Element).style.visibility = "hidden";
+    (elm as html.Element).style.transition = "all 1s";
+    (elm as html.Element).style.opacity = "0";
   }
 
 
@@ -164,6 +162,8 @@ class ArticleComponent implements OnInit, DynamicItem {
     }
     var elm = element.nativeElement;
     (elm as html.Element).style.visibility = "visible";
+    (elm as html.Element).style.opacity = "1";
+//    opacity: 0;
   }
 
   onEdit(){
