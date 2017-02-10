@@ -21,12 +21,12 @@ import 'package:angular2_components/angular2_components.dart';
 
 @Component(
   selector: "my-app",
-  directives: const [LoginDialog, UserPage, UsersPage, LogoutDialog, PostArticlePage,ROUTER_DIRECTIVES,materialDirectives],
+  directives: const [LoginDialog, UserPage, UsersPage, LogoutDialog, PostArticlePage, ROUTER_DIRECTIVES, materialDirectives],
   providers: const [ROUTER_PROVIDERS],
-  templateUrl: "app_main.html",
-  styleUrls: const ["app_main.css"],
+  templateUrl:"app_main.html",
+  styleUrls:const ["app_main.css"],
 )
-@RouteConfig( const[
+@RouteConfig(const[
   const Route(
       path: "/",
       name: "Arts",
@@ -41,7 +41,7 @@ import 'package:angular2_components/angular2_components.dart';
       path: "/me",
       name: "Me",
       component: MeComponent,
-      data: const {"page":"me"},
+      data: const {"page": "me"},
       useAsDefault: false),
   const Route(
       path: "/user",
@@ -55,7 +55,7 @@ import 'package:angular2_components/angular2_components.dart';
       useAsDefault: false),
 ]
 )
-class AppComponent implements OnInit {
+class AppComponent {
   bool useHome = true;
   bool useMe = true;
   bool useUsers = true;
@@ -64,34 +64,27 @@ class AppComponent implements OnInit {
 
   @ViewChild('headera')
   set header(ElementRef elementRef) {
-
     html.Element el = elementRef.nativeElement;
-    html.window.onScroll.listen((e){
-      if(html.window.scrollY > 100) {
-        print(">>A ${html.window.scrollY  }");
-
-        if(false == el.classes.contains("topNavi")){
+    html.window.onScroll.listen((e) {
+      if (html.window.scrollY > 100) {
+        if (false == el.classes.contains("topNavi")) {
           el.classes.add("topNavi");
         }
       } else {
-        print(">>B ${html.window.scrollY  }");
-
-        if(true == el.classes.contains("topNavi")){
+        if (true == el.classes.contains("topNavi")) {
           el.classes.remove("topNavi");
         }
       }
     });
+  }
 
-  }
-  AppComponent(){
-  }
+  AppComponent();
   onLogin(LoginDialog d) {
     d.open();
   }
+
   onLogout(LogoutDialog d) {
     d.open();
   }
 
-  ngOnInit() {
-  }
 }

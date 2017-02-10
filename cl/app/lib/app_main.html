@@ -1,31 +1,31 @@
 <div>
     FireFireStyle 炎の型工房
 </div>
-<header class='myhe' #headera>
-    <nav class='myul'>
+<header class='myheader' #headera>
+    <nav class='mynavi'>
         <div *ngIf='useHome==true'>
-            <a class='myli' [routerLink]="['Arts']">
+            <a class='mynaviitemL' [routerLink]="['Arts']">
                 <glyph icon="home"></glyph>
                 <br>
                 <div style='font-size:6px;'>Home</div>
             </a>
         </div>
         <div *ngIf='useUsers==true'>
-            <a class='myli' [routerLink]="['Users']">
+            <a class='mynaviitemL' [routerLink]="['Users']">
                 <glyph icon="group"></glyph>
                 <br>
                 <div style='font-size:6px;'>User</div>
             </a>
         </div>
         <div *ngIf='rootConfig.cookie.accessToken == ""'>
-            <a class='myli' [routerLink]="['Me']">
+            <a class='mynaviitemL' [routerLink]="['Me']">
                 <glyph icon="face"></glyph>
                 <br>
                 <div style='font-size:6px;'>Me</div>
             </a>
         </div>
         <div *ngIf='rootConfig.cookie.accessToken != ""'>
-            <a class='myli' [routerLink]="['User',{name:rootConfig.cookie.userName}]">
+            <a class='mynaviitemL' [routerLink]="['User',{name:rootConfig.cookie.userName}]">
                 <glyph icon="face"></glyph>
                 <br>
                 <div style='font-size:6px;'>Me</div>
@@ -33,32 +33,47 @@
         </div>
 
         <div *ngIf='rootConfig.cookie.accessToken == ""'>
-            <a class='mylr' (click)='onLogin(myDialoga)'>
+            <a class='mynaviitemR' (click)='onLogin(myDialoga)'>
                 <glyph icon="flag"></glyph>
                 <br>
                 <div style='font-size:6px;'>Login</div>
             </a>
         </div>
         <div *ngIf='rootConfig.cookie.accessToken != ""'>
-            <a class='mylr' [routerLink]="['Post']">
+            <a class='mynaviitemR' [routerLink]="['Post']">
                 <glyph icon="add_box"></glyph>
                 <br>
                 <div style='font-size:6px;'>New</div>
             </a>
         </div>
         <div *ngIf='rootConfig.cookie.accessToken != ""'>
-            <a class='mylr' (click)='onLogout(myLogoutDialoga)'>
+            <a class='mynaviitemR' (click)='onLogout(myLogoutDialoga)'>
                 <glyph icon="undo"></glyph>
                 <br>
                 <div style='font-size:6px;'>Logout</div>
             </a>
         </div>
     </nav>
-</header>  <br><br>
-<main class='main'><br>
+</header>  <br style="clear:both;">
+<div style="height:100px;"></div>
+<main class='main'>
     <router-outlet></router-outlet>
 </main>
-<footer style='background-color:#555; font:#000000'>
+<div class="sub">
+    Sponsor link<br>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- FireFIreStyle -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1341933833430445"
+         data-ad-slot="4523886849"
+         data-ad-format="auto"></ins>
+    <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+<br style="clear:both;"><br>
+<footer class="footer">
     <div style='color:#ffffff;'>
         MAIL: <a style='color:#ffffff;' href="kyorohiro@firefirestyle.net">kyorohiro@firefirestyle.net</a>
     </div>
@@ -74,3 +89,4 @@
 </my-login-dialog>
 <my-logout-dialog [name]="'as'" #myLogoutDialoga>
 </my-logout-dialog>
+
