@@ -117,6 +117,7 @@ import 'package:angular2_components/angular2_components.dart';
     margine: 1px;
     text-align: center;
     border: 1px solid #555;
+    border-radius: 10px;
   }
   .myli .selected {
     background-color: #4CAF50;
@@ -137,6 +138,7 @@ import 'package:angular2_components/angular2_components.dart';
     text-align: center;
     border: 1px solid #ffffff;
     background-color: #555;
+    border-radius: 10px;
   }
   """],
 )

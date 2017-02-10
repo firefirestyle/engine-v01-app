@@ -18,12 +18,22 @@ import 'package:k07me.prop/prop.dart' as prop;
     directives: const[DeleteArticleDialog,ROUTER_DIRECTIVES],
     template: """
     <div>
-    <h2>{{artInfo.title}}</h2>
-    <a [routerLink]="['User',{name:artInfo.userName}]">{{artInfo.userName}}</a>
+    <div *ngIf='url!=""'>
+    <a href='{{url}}' style='font-size:8px;' target="_blank">
+       <div #imagecont></div>
+    </a> </div>
+    <div *ngIf='url!=""'>
     <div #imagecont></div>
-    <div #userinfocont></div>
+    </div>
+    <div style='font-size:18px;font-weight:bold;'>{{artInfo.title}}</div>
+    <div style='font-size:14px;'#userinfocont></div>
     <div *ngIf='url!=""'>
       <a href='{{url}}' style='font-size:8px;' target="_blank">goto this site</a>
+    </div>
+    <hr>
+    <div style='font-size:14px;'>
+    User :
+    <a [routerLink]="['User',{name:artInfo.userName}]">{{artInfo.userName}}</a>
     </div>
     <button *ngFor='let t of artInfo.tags' (click)='onClickTag(t)'>{{t}}</button>
     <div *ngIf='info.isUpdatable(artInfo.userName)'>
@@ -133,6 +143,7 @@ class ArticleComponent implements OnInit, DynamicItem {
             c.complete("");
           });
           iconUrl = await info.artNBox.createBlobUrlFromKey(artInfo.iconUrl);
+          imgElm.style.borderRadius = "10px";
           imgElm.src = iconUrl;
           print("-->A 1");
 
