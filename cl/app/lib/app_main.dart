@@ -17,10 +17,11 @@ import 'page_users.dart';
 import 'page_post_art.dart';
 import 'comp_post_art.dart';
 import 'dart:html' as html;
+import 'package:angular2_components/angular2_components.dart';
 
 @Component(
   selector: "my-app",
-  directives: const [LoginDialog, UserPage, UsersPage, LogoutDialog, PostArticlePage,ROUTER_DIRECTIVES],
+  directives: const [LoginDialog, UserPage, UsersPage, LogoutDialog, PostArticlePage,ROUTER_DIRECTIVES,materialDirectives],
   providers: const [ROUTER_PROVIDERS],
   template: """
   <div>
@@ -29,29 +30,29 @@ import 'dart:html' as html;
   <header class='myhe' #headera>
   <nav class='myul'>
   <div *ngIf='useHome==true'>
-  <a class='myli' [routerLink]="['Arts']">Home</a>
+  <a class='myli' [routerLink]="['Arts']"><glyph icon="home"></glyph><br><div style='font-size:6px;'>Home</div></a>
   </div>
   <div *ngIf='useUsers==true'>
-  <a class='myli' [routerLink]="['Users']">Users</a>
+  <a class='myli' [routerLink]="['Users']"><glyph icon="group"></glyph><br><div style='font-size:6px;'>User</div></a>
   </div>
   <div *ngIf='rootConfig.cookie.accessToken == ""'>
-  <a class='myli' [routerLink]="['Me']">Me</a>
+  <a class='myli' [routerLink]="['Me']"><glyph icon="face"></glyph><br><div style='font-size:6px;'>Me</div></a>
   </div>
   <div *ngIf='rootConfig.cookie.accessToken != ""'>
-  <a class='myli' [routerLink]="['User',{name:rootConfig.cookie.userName}]">Me</a>
+  <a class='myli' [routerLink]="['User',{name:rootConfig.cookie.userName}]"><glyph icon="face"></glyph><br><div style='font-size:6px;'>Me</div></a>
   </div>
 
   <div *ngIf='rootConfig.cookie.accessToken == ""'>
-  <a class='mylr' (click)='onLogin(myDialoga)'>Login</a>
+  <a class='mylr' (click)='onLogin(myDialoga)'><glyph icon="flag"></glyph><br><div style='font-size:6px;'>Login</div></a>
   </div>
     <div *ngIf='rootConfig.cookie.accessToken != ""'>
-  <a class='mylr' [routerLink]="['Post']">New</a>
+  <a class='mylr' [routerLink]="['Post']"><glyph icon="add_box"></glyph><br><div style='font-size:6px;'>New</div></a>
   </div>
   <div *ngIf='rootConfig.cookie.accessToken != ""'>
-  <a class='mylr' (click)='onLogout(myLogoutDialoga)'>Logout</a>
+  <a class='mylr' (click)='onLogout(myLogoutDialoga)'><glyph icon="undo"></glyph><br><div style='font-size:6px;'>Logout</div></a>
   </div>
   </nav>
-  </header>
+  </header>  <br><br>
   <main class='main'><br>
   <router-outlet></router-outlet>
   </main>
@@ -83,14 +84,15 @@ import 'dart:html' as html;
     margin: 0;
     padding: 0;
     width: 600px;
-    height: 34px;
-    background-color: #f1f1f1;
+#    //height: 34px;
+
  #   border: 1px solid #555;
   }
   .myhe {
       position: absolute;
       width: 600px;
-      z-index: auto;
+    z-index: 999;
+        background-color: #f1f1f1;
    }
   @media (max-width: 600px) {
     .myul {
@@ -130,7 +132,7 @@ import 'dart:html' as html;
     font-size: 16px;
     color: #ffffff;
     text-decoration: none;
-    padding: 8px 2px;
+    padding: 8px 16px;
     margine: 1px;
     text-align: center;
     border: 1px solid #ffffff;

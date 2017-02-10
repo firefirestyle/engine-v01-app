@@ -11,9 +11,9 @@ import 'dart:async';
     selector: "arts-component",
     directives: const [ArticleComponent],
     template: """
-    <div #container>
+    <div #container style='width:100%;'>
     <div *ngFor='let artInfo of artInfos' style='position:relative;'>
-        <art-component [parent]='own' [info]='info' [artInfo]='artInfo'  [width]='((dynaCore.rootWidth-20)/2)'></art-component>
+        <art-component [parent]='own' [info]='info' [artInfo]='artInfo'  [width]='itemWidth'></art-component>
     </div>
     </div>
     <div style='width:100%;height:20px;box-shadow:2px 2px 1px grey;' (click)='onNext()'>
@@ -28,8 +28,26 @@ class ArticlesComponent implements OnInit {
   ArticleComponentInfo info;
   ArticlesComponent own = null;
 
+  int _itemWidth = 0;
+  int get itemWidth {
+    if(_itemWidth == 0) {
+     _itemWidth = (dynaCore.rootWidth - 20) ~/ 2;
+    }
+    return _itemWidth;
+  }
+
   ArticlesComponent(this._artsComponentElementRef, this._router) {
-    (_artsComponentElementRef.nativeElement as html.Element).style.display = "block";
+    html.Element v = (_artsComponentElementRef.nativeElement as html.Element);
+    v.style.display = "block";
+    v.style.position = "relative";
+    Timer timer = new Timer(new Duration(seconds: 1),(){});
+    html.window.onResize.listen((e) {
+      timer.cancel();
+      timer = new Timer(new Duration(milliseconds: 500),(){
+        print(">>>>> onResize  ${(_artsComponentElementRef.nativeElement as html.Element).clientWidth}");
+        onResize();
+      });
+    });
     own = this;
     info = new MyArticleComponentInfo(parent: this);
   }
@@ -53,12 +71,16 @@ class ArticlesComponent implements OnInit {
     if (elementRef == null || elementRef.nativeElement == null) {
       return;
     }
+    elementRef.nativeElement.onResize.listen((e) {
+      print(">>>>> onResize B");
+    });
     _contElm = elementRef.nativeElement;
   }
 
   onNext() {
     update();
   }
+
 
   update() async {
     ArtNBox artNBox = config.AppConfig.inst.appNBox.artNBox;
@@ -71,7 +93,7 @@ class ArticlesComponent implements OnInit {
 
     List<Future> fs = [];
     var ks = new List.from(list.keys);
-    while(0 < ks.length) {
+    while (0 < ks.length) {
       while (0 < ks.length && fs.length < 5) {
         String key = ks.removeAt(0);
         fs.add(artNBox.getArtFromStringId(key));
@@ -86,6 +108,22 @@ class ArticlesComponent implements OnInit {
 
   //
   //
+  List<DynamicItem> items = [];
+  onResize() {
+    dynaCore = new dyna.DynaBlockCore(rootWidth: (_artsComponentElementRef.nativeElement as html.Element).clientWidth);
+
+    for(var ap in items) {
+      var elm = ap.element.nativeElement;
+      dyna.FreeSpaceInfo info = dynaCore.addBlock(ap.width + 10, ap.height + 10);
+      elm.style.position = "absolute";
+      elm.style.left = "${(info.xs + 5)}px";
+      elm.style.top = "${info.y}px";
+      print("${(info.xs + 5)}  ${info.y} :: ${ap.width } ${ap.height}");
+    }
+
+    (_contElm).style.height = "${dynaCore.rootHeight + 20}px";
+  }
+
   dyna.DynaBlockCore dynaCore = null;
 
   append(DynamicItem ap) {
@@ -96,14 +134,14 @@ class ArticlesComponent implements OnInit {
       dynaCore = new dyna.DynaBlockCore(rootWidth: (_artsComponentElementRef.nativeElement as html.Element).clientWidth);
     }
     var elm = ap.element.nativeElement;
-    dyna.FreeSpaceInfo info = dynaCore.addBlock(
-        ap.width + 10, ap.height + 10);
+    dyna.FreeSpaceInfo info = dynaCore.addBlock(ap.width + 10, ap.height + 10);
     elm.style.position = "absolute";
     elm.style.left = "${(info.xs + 5)}px";
     elm.style.top = "${info.y}px";
     // print(">>lt: ${elm.style.left}px ${elm.style.top}px");
     (_contElm).style.display = "block";
     (_contElm).style.height = "${dynaCore.rootHeight + 20}px";
+    items.add(ap);
   }
 
   //
@@ -143,7 +181,7 @@ class MyArticleComponentInfo extends ArticleComponentInfo {
   MyArticleComponentInfo({this.parent: null}) : super();
 
 
-      onRemove(ArtInfoProp art) {
+  onRemove(ArtInfoProp art) {
     if (parent != null && parent.artInfos.contains(art)) {
       parent.artInfos.remove(art);
     }

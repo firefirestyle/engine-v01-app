@@ -100,7 +100,7 @@ class ArticleComponent implements OnInit, DynamicItem {
     (elm as html.Element).style.display = 'inline-block';
     (elm as html.Element).style.position = "relative";
     (elm as html.Element).style.visibility = "hidden";
-    (elm as html.Element).style.transition = "all 1s";
+    (elm as html.Element).style.transition = "all 500ms";
     (elm as html.Element).style.opacity = "0";
   }
 
