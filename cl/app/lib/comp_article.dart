@@ -22,7 +22,7 @@ import 'package:k07me.prop/prop.dart' as prop;
     <a href='{{url}}' style='font-size:8px;' target="_blank">
        <div #imagecont></div>
     </a> </div>
-    <div *ngIf='url!=""'>
+    <div *ngIf='url==""'>
     <div #imagecont></div>
     </div>
     <div style='font-size:18px;font-weight:bold;'>{{artInfo.title}}</div>
@@ -105,8 +105,9 @@ class ArticleComponent implements OnInit, DynamicItem {
     //params["user"] = _routeParams.get("user");
     var elm = element.nativeElement;
     print("${elm}");
-    (elm as html.Element).style.width = "${width+4}px";
-    (elm as html.Element).style.boxShadow = "2px 2px 1px grey";
+    (elm as html.Element).style.width = "${width}px";
+    (elm as html.Element).style.boxShadow = "0px 0px 1px 0px rgba(0, 0, 0, 0.2)";
+    (elm as html.Element).style.borderRadius = "10px";
     (elm as html.Element).style.display = 'inline-block';
     (elm as html.Element).style.position = "relative";
     (elm as html.Element).style.visibility = "hidden";
