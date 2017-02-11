@@ -12,6 +12,7 @@ import 'dart:async';
 import 'dialog_login.dart';
 import 'dialog_logout.dart';
 import 'page_arts.dart';
+import 'page_art.dart';
 import 'page_user.dart';
 import 'page_users.dart';
 import 'page_post_art.dart';
@@ -27,11 +28,6 @@ import 'package:angular2_components/angular2_components.dart';
   styleUrls:const ["app_main.css"],
 )
 @RouteConfig(const[
-  const Route(
-      path: "/",
-      name: "Arts",
-      component: ArtsPage,
-      useAsDefault: true),
   const Route(
       path: "/users",
       name: "Users",
@@ -52,6 +48,16 @@ import 'package:angular2_components/angular2_components.dart';
       path: "/post",
       name: "Post",
       component: PostArticlePage,
+      useAsDefault: false),
+  const Route(
+      path: "/",
+      name: "Arts",
+      component: ArtsPage,
+      useAsDefault: true),
+  const Route(
+      path: "/**",
+      name: "Art",
+      component: ArtPage,
       useAsDefault: false),
 ]
 )
@@ -78,7 +84,8 @@ class AppComponent {
     });
   }
 
-  AppComponent();
+  final Router _router;
+  AppComponent(this._router);
   onLogin(LoginDialog d) {
     d.open();
   }
