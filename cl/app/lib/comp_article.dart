@@ -121,7 +121,7 @@ class ArticleComponent implements OnInit, DynamicItem {
       artInfo = new ArtInfoProp(new MiniProp());
     }
     var elm = element.nativeElement;
-    (elm as html.Element).style.width = "${width+4}px";
+    (elm as html.Element).style.width = "${width}px";
     updateInfo();
   }
 
