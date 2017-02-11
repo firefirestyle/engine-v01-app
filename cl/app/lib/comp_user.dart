@@ -7,13 +7,14 @@ import 'dart:html' as html;
 
 import 'inputimgage/dialog.dart';
 import 'updateuser/dialog.dart';
+import 'deleteUser/dialog.dart';
 import 'dart:async';
 import 'config.dart' as config;
 
 //
 @Component(
   selector: "user-component",
-  directives: const[InputImageDialog, UpdateUserDialog,ROUTER_DIRECTIVES],
+  directives: const[InputImageDialog, UpdateUserDialog, DeleteUserDialog ,ROUTER_DIRECTIVES],
   template: """
     <div>
     <img #image1 *ngIf='iconUrl==""' src='/assets/egg.png'>
@@ -26,12 +27,15 @@ import 'config.dart' as config;
     <div *ngIf='isUpdatable'>
       <button (click)='onUpdateIcon(myDialoga)'> updateIcon</button>
       <button (click)='onUpdateInfo(myDialogb)'> updateInfo</button>
+      <button (click)='onDeleteUser(myDialogc)'  style='background-color:red;'> delete mine</button>
     </div>
 
     <inputimage-dialog [param]="paramOfInputImageDialog" #myDialoga>
     </inputimage-dialog>
     <updateuser-dialog [param]="paramOfUpdateDialog" #myDialogb>
     </updateuser-dialog>
+    <deleteuser-dialog [param]="paramOfDeleteDialog" #myDialogc>
+    </deleteuser-dialog>
     </div>
   """,
 )
@@ -77,6 +81,7 @@ class UserComponent implements OnInit {
   //
   InputImageDialogParam paramOfInputImageDialog = new InputImageDialogParam();
   UpdateUserDialogParam paramOfUpdateDialog = new UpdateUserDialogParam();
+  DeleteUserDialogParam paramOfDeleteDialog = new DeleteUserDialogParam();
 
   UserComponent(this._routeParams) {
   }
@@ -126,6 +131,10 @@ class UserComponent implements OnInit {
           cont: dd.content
       );
     };
+    d.open();
+  }
+  onDeleteUser(DeleteUserDialog d) {
+    paramOfDeleteDialog = new DeleteUserDialogParam();
     d.open();
   }
 }

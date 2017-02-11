@@ -65,15 +65,25 @@ class MeNBox {
     return new UserInfoProp(new pro.MiniProp.fromByte(response.response.asUint8List(), errorIsThrow: false));
   }
 
-  Future<UserInfoProp> updateUserInfo(String accessToken, String userName, {String displayName: "", String cont: "", List<String> tags}) async {
+  Future<UserInfoProp> updateUserInfo(String accessToken, String userName, {String displayName: null, String cont: null, List<String> tags:null, String status:null}) async {
     var requester = await builder.createRequester();
     var url = ["""${backAddr}/api/v1/me/update"""].join();
     var inputData = new pro.MiniProp();
     inputData.setString("token", accessToken);
     inputData.setString("userName", userName);
-    inputData.setString("displayName", displayName);
-    inputData.setString("content", cont);
-    inputData.setPropStringList(null, "tags", tags);
+    if(displayName != null) {
+      inputData.setString("displayName", displayName);
+    }
+    if(cont != null) {
+      inputData.setString("content", cont);
+    }
+    if(tags != null) {
+      inputData.setPropStringList(null, "tags", tags);
+    }
+    if(status != null) {
+      inputData.setPropStringList(null, "status", status);
+    }
+
     req.Response response = await requester.request(req.Requester.TYPE_POST, url, data: inputData.toJson());
     if (response.status != 200) {
       throw new ErrorProp(new pro.MiniProp.fromByte(response.response.asUint8List(), errorIsThrow: false));

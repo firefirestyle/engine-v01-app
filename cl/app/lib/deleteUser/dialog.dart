@@ -4,10 +4,11 @@ import 'dart:html' as html;
 import 'dart:async';
 import 'package:k07me.netbox/netbox.dart';
 import 'package:k07me.prop/prop.dart';
+import '../config.dart' as config;
 
 
 @Component(
-  selector: 'deletearticle-dialog',
+  selector: 'deleteuser-dialog',
   styles: const [
     """
     .updateuser-dialog-title {
@@ -28,6 +29,7 @@ import 'package:k07me.prop/prop.dart';
     <div *ngIf='errorMessage!=""' class='updateuser-dialog-errormessage'>{{errorMessage}}</div>
     <h3 class='updateuser-dialog-title' header>{{param.title}}</h3>
     <p class='updateuser-dialog-message'>{{param.message}}</p>
+    <input [(ngModel)]='inputValue'>
     <material-spinner *ngIf='isloading'></material-spinner>
 
     <div footer>
@@ -44,18 +46,19 @@ import 'package:k07me.prop/prop.dart';
   directives: const [materialDirectives],
   providers: const [materialProviders],
 )
-class DeleteArticleDialog implements OnInit {
+class DeleteUserDialog implements OnInit {
   @ViewChild('wrappingModal')
   ModalComponent wrappingModal;
 
   @Input()
-  DeleteArticleDialogParam param;
+  DeleteUserDialogParam param;
 
-
+  String inputValue = "---";
   String errorMessage = "";
   String get content => param.content;
   //
   bool isloading = false;
+
 
   ngOnInit(){
   }
@@ -81,9 +84,9 @@ class DeleteArticleDialog implements OnInit {
   }
 }
 
-typedef Future<String> OnDeleteFunc(DeleteArticleDialog d);
+typedef Future<String> OnDeleteFunc(DeleteUserDialog d);
 
-class DeleteArticleDialogParam {
+class DeleteUserDialogParam {
   String title;
   String message;
   String ok;
@@ -92,17 +95,22 @@ class DeleteArticleDialogParam {
   String content;
 
   //
-  OnDeleteFunc onDeleteFunc;
+  OnDeleteFunc onDeleteFunc = (DeleteUserDialog d) async {
+    MeNBox meNBox = config.AppConfig.inst.appNBox.meNBox;
+    if(d.inputValue != config.AppConfig.inst.cookie.userName) {
+      throw new Exception("input username is wrong ::${d.inputValue}::");
+    }
+    await meNBox.updateUserInfo(config.AppConfig.inst.cookie.accessToken, config.AppConfig.inst.cookie.userName,status: "private");
+  };
 
-  DeleteArticleDialogParam({this.title:"Delete Article",this.message:"..",this.ok:"Delete",this.cancel:"Cancel",
+  DeleteUserDialogParam({this.title:"Delete User",this.message:"""Your Article could not delete. Are You OK. if OK than, input user name and  push delete button""",this.ok:"Delete",this.cancel:"Cancel",
     onDeleteFunc: null}){
   }
 
   /**
    * if failed to do onFind func, then return error message.
    */
-  Future<String> onDelete(DeleteArticleDialog d) async {
-
+  Future<String> onDelete(DeleteUserDialog d) async {
     if (onDeleteFunc == null) {
       return "";
     } else {
