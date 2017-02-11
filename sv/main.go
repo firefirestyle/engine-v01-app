@@ -3,8 +3,12 @@ package app
 import (
 	"net/http"
 
+	"regexp"
+
 	paArtTmp "github.com/firefirestyle/engine-v01/article/template"
 	paUsrTmp "github.com/firefirestyle/engine-v01/user/template"
+	//	"google.golang.org/appengine"
+	//	"google.golang.org/appengine/log"
 )
 
 /*
@@ -29,10 +33,24 @@ var artTemplate *paArtTmp.ArtTemplate = paArtTmp.NewArtTemplate(
 func init() {
 	usrTemplate.InitUserApi()
 	artTemplate.InitArtApi()
-	for _, v := range indexUrlConfig {
-		w := http.FileServer(http.Dir("web"))
-		var a string = ("/" + v)
-		http.Handle(a, http.StripPrefix(a, w))
-	}
-	http.Handle("/", http.FileServer(http.Dir("web")))
+	//
+	//router path
+	pat1, _ := regexp.Compile("[A-Z2-7]+")
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		//
+		for _, v := range indexUrlConfig {
+			if v == r.URL.Path {
+				http.ServeFile(w, r, "web/index.html")
+				return
+			}
+		}
+		//
+		if pat1.MatchString(r.URL.Path) {
+			http.ServeFile(w, r, "web/index.html")
+			return
+		} else {
+			http.ServeFile(w, r, "web"+r.URL.Path)
+			return
+		}
+	})
 }
