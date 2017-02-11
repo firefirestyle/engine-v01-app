@@ -6,20 +6,40 @@ import 'comp_article.dart';
 import 'dynablock.dart' as dyna;
 import 'dart:html' as html;
 import 'dart:async';
+import 'package:angular2_components/angular2_components.dart';
 
 @Component(
     selector: "arts-component",
-    directives: const [ArticleComponent],
+    directives: const [ArticleComponent,materialDirectives],
     template: """
     <div #container style='width:100%;'>
     <div *ngFor='let artInfo of artInfos' style='position:relative;'>
         <art-component [parent]='own' [info]='info' [artInfo]='artInfo'  [width]='itemWidth'></art-component>
     </div>
     </div>
-    <div style='width:100%;height:20px;box-shadow:2px 2px 1px grey;' (click)='onNext()'>
-    <div align='center'>MORE</div>
+    <div *ngIf='isLoading==false' (click)='onNext()'>
+    <div align=center class='more'>MORE</div>
     </div>
-  """
+    <div *ngIf='isLoading==true' align=center>
+    <material-spinner></material-spinner>
+    </div>
+  """,
+    styles: const ["""
+    .more {
+      border-radius: 10px;
+      box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      background-color: #ffffff;
+      color: black;
+      margin: 0 auto;
+      text-align: center;
+      vertical-align: center;
+     }
+    .more:hover {
+      background-color: #555;
+      color: white;
+     }
+    """]
 )
 class ArticlesComponent implements OnInit {
   final ElementRef _artsComponentElementRef;
@@ -27,6 +47,7 @@ class ArticlesComponent implements OnInit {
 
   ArticleComponentInfo info;
   ArticlesComponent own = null;
+  bool isLoading = false;
 
   int _itemWidth = 0;
   int get itemWidth {
@@ -71,9 +92,6 @@ class ArticlesComponent implements OnInit {
     if (elementRef == null || elementRef.nativeElement == null) {
       return;
     }
-    elementRef.nativeElement.onResize.listen((e) {
-      print(">>>>> onResize B");
-    });
     _contElm = elementRef.nativeElement;
   }
 
@@ -83,26 +101,31 @@ class ArticlesComponent implements OnInit {
 
 
   update() async {
-    ArtNBox artNBox = config.AppConfig.inst.appNBox.artNBox;
-    ArtKeyListProp list = await artNBox.findArticle(cursor, props: {"s": "p"}, tags: getTags(), userName: getUserName());
-    cursor = list.cursorNext;
-    if (dynaCore == null) {
-      dynaCore = new dyna.DynaBlockCore(rootWidth: (_artsComponentElementRef.nativeElement as html.Element).clientWidth);
-    }
-
-
-    List<Future> fs = [];
-    var ks = new List.from(list.keys);
-    while (0 < ks.length) {
-      while (0 < ks.length && fs.length < 5) {
-        String key = ks.removeAt(0);
-        fs.add(artNBox.getArtFromStringId(key));
+    try {
+      isLoading = true;
+      ArtNBox artNBox = config.AppConfig.inst.appNBox.artNBox;
+      ArtKeyListProp list = await artNBox.findArticle(cursor, props: {"s": "p"}, tags: getTags(), userName: getUserName());
+      cursor = list.cursorNext;
+      if (dynaCore == null) {
+        dynaCore = new dyna.DynaBlockCore(rootWidth: (_artsComponentElementRef.nativeElement as html.Element).clientWidth);
       }
 
-      for (var artInfofs in fs) {
-        artInfos.add(await artInfofs);
+
+      List<Future> fs = [];
+      var ks = new List.from(list.keys);
+      while (0 < ks.length) {
+        while (0 < ks.length && fs.length < 5) {
+          String key = ks.removeAt(0);
+          fs.add(artNBox.getArtFromStringId(key));
+        }
+
+        for (var artInfofs in fs) {
+          artInfos.add(await artInfofs);
+        }
+        fs.clear();
       }
-      fs.clear();
+    } finally {
+      isLoading = false;
     }
   }
 
