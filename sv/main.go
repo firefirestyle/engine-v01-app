@@ -9,11 +9,22 @@ import (
 	paUsrTmp "github.com/firefirestyle/engine-v01/user/template"
 	//	"google.golang.org/appengine"
 	//	"google.golang.org/appengine/log"
+	"os"
+	//	"strings"
+	"time"
+
+	"io/ioutil"
+
+	//	"google.golang.org/appengine/log"
+
+	"encoding/base32"
+
+	"google.golang.org/appengine"
 )
 
 /*
 config.go
-var indexUrlConfig []string = []string{"/users", "/me", "/user", "/post"}
+var indexUrlConfig []string = []string{"/index.html","/", "/users", "/me", "/user", "/post"}
 var usrConfig = paUsrTmp.UserTemplateConfig{
 	TwitterConsumerKey:       "zr",
 	TwitterConsumerSecret:    "e7",
@@ -36,11 +47,13 @@ func init() {
 	//
 	//router path
 	pat1, _ := regexp.Compile("[A-Z2-7]+")
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		//
 		for _, v := range indexUrlConfig {
 			if v == r.URL.Path {
-				http.ServeFile(w, r, "web/index.html")
+				//				http.ServeFile(w, r, "web/index.html")
+				serveIndexHtml(w, r, "web")
 				return
 			}
 		}
@@ -49,8 +62,46 @@ func init() {
 			http.ServeFile(w, r, "web/index.html")
 			return
 		} else {
-			http.ServeFile(w, r, "web"+r.URL.Path)
+			serveFile(w, r, "web")
+			//			http.ServeFile(w, r, "web"+r.URL.Path)
 			return
 		}
 	})
+}
+
+func serveIndexHtml(w http.ResponseWriter, r *http.Request, dir string) {
+	pat2, _ := regexp.Compile("main\\.dart\\.js")
+	path := dir + "/index.html"
+
+	f, e := os.Open(path)
+	if e != nil {
+		w.WriteHeader(404)
+		return
+	}
+	cont, _ := ioutil.ReadAll(f)
+	version := appengine.VersionID(appengine.NewContext(r))
+	versionHash := base32.StdEncoding.EncodeToString([]byte(version))
+	v := "main.dart.js?version=" + versionHash
+	cont = pat2.ReplaceAll(cont, []byte(v))
+	f.Close()
+
+	w.Write([]byte(cont))
+}
+
+func serveFile(w http.ResponseWriter, r *http.Request, dir string) {
+	pat1, _ := regexp.Compile(".*/")
+	path := dir + r.URL.Path
+	filename := pat1.ReplaceAllString(path, "")
+
+	f, e := os.Open(path)
+	if e != nil {
+		w.WriteHeader(404)
+		return
+	}
+
+	if r.URL.Query().Get("version") != "" {
+		w.Header().Set("Cache-Control", "public, max-age=2592000")
+	}
+
+	http.ServeContent(w, r, filename, time.Time{}, f)
 }
