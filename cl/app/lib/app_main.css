@@ -88,6 +88,7 @@
 .sub {
   float:left;
   display: block;
+  width: 250px;
   padding: 16px 32px;
   margine: 8px;
 }

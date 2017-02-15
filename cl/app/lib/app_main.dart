@@ -19,6 +19,7 @@ import 'page_post_art.dart';
 import 'comp_post_art.dart';
 import 'dart:html' as html;
 import 'package:angular2_components/angular2_components.dart';
+import 'dart:js' as js;
 
 @Component(
   selector: "my-app",
@@ -61,36 +62,12 @@ import 'package:angular2_components/angular2_components.dart';
       useAsDefault: false),
 ]
 )
-class AppComponent {
+class AppComponent implements OnInit{
   bool useHome = true;
   bool useMe = true;
   bool useUsers = true;
   config.AppConfig rootConfig = config.AppConfig.inst;
 
-
-  @ViewChild('adsense')
-  set adsense(ElementRef elementRef) {
-    html.Element el = elementRef.nativeElement;
-    el.children.clear();
-    el.appendHtml("""
-    Sponsor link<br>""");
-    el.appendHtml("""
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- FireFIreStyle -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-1341933833430445"
-         data-ad-slot="4523886849"
-         data-ad-format="auto"></ins>
-    </script>
-
-    """,treeSanitizer: html.NodeTreeSanitizer.trusted);
-    el.appendHtml("""
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    """,treeSanitizer: html.NodeTreeSanitizer.trusted);
-  }
 
   @ViewChild('headera')
   set header(ElementRef elementRef) {
@@ -116,6 +93,17 @@ class AppComponent {
 
   onLogout(LogoutDialog d) {
     d.open();
+  }
+
+  ngOnInit(){
+    new Future((){
+      try {
+        js.JsObject n = js.context["adsbygoogle"];
+        n.callMethod("push", [new js.JsObject.jsify({})]);
+      } catch(e) {
+        print("Failed to push adsense");
+      }
+    });
   }
 
 }
