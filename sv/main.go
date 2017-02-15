@@ -13,7 +13,7 @@ import (
 
 /*
 config.go
-var indexUrlConfig []string = []string{"users", "me", "user", "post"}
+var indexUrlConfig []string = []string{"/users", "/me", "/user", "/post"}
 var usrConfig = paUsrTmp.UserTemplateConfig{
 	TwitterConsumerKey:       "zr",
 	TwitterConsumerSecret:    "e7",
