@@ -68,6 +68,30 @@ class AppComponent {
   config.AppConfig rootConfig = config.AppConfig.inst;
 
 
+  @ViewChild('adsense')
+  set adsense(ElementRef elementRef) {
+    html.Element el = elementRef.nativeElement;
+    el.children.clear();
+    el.appendHtml("""
+    Sponsor link<br>""");
+    el.appendHtml("""
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- FireFIreStyle -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1341933833430445"
+         data-ad-slot="4523886849"
+         data-ad-format="auto"></ins>
+    </script>
+
+    """,treeSanitizer: html.NodeTreeSanitizer.trusted);
+    el.appendHtml("""
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    """,treeSanitizer: html.NodeTreeSanitizer.trusted);
+  }
+
   @ViewChild('headera')
   set header(ElementRef elementRef) {
     html.Element el = elementRef.nativeElement;
