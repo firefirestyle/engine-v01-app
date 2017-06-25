@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"regexp"
+	"strings"
 
 	paArtTmp "github.com/firefirestyle/engine-v01/article/template"
 	paUsrTmp "github.com/firefirestyle/engine-v01/user/template"
@@ -49,6 +50,10 @@ func init() {
 	pat1, _ := regexp.Compile("[A-Z2-7]+")
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if strings.Contains(r.URL.Host, "firefirestyle.net") {
+			http.Redirect(w, r, "https://firefirestyle.appspot.com", 302)
+			return
+		}
 		//
 		for _, v := range indexUrlConfig {
 			if v == r.URL.Path {
